@@ -49,34 +49,34 @@ def get_conn():
 # ── Schema init ──────────────────────────────────────────────────────────────
 CREATE_STUDENTS_SQL = """
 CREATE TABLE IF NOT EXISTS bot_admissions_students (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    wa_id       TEXT    NOT NULL UNIQUE,
-    sender_name TEXT,
-    phone       TEXT,
-    last_interest_code  TEXT,
-    last_level          TEXT,
-    last_faculty        TEXT,
-    last_school         TEXT,
-    last_branch         TEXT,
-    last_label          TEXT,
-    interests_json      TEXT DEFAULT '[]',
-    visit_count         INTEGER DEFAULT 1,
-    first_seen          TEXT,
-    last_seen           TEXT
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    wa_id VARCHAR(255) NOT NULL UNIQUE,
+    sender_name VARCHAR(255),
+    phone VARCHAR(30),
+    last_interest_code VARCHAR(100),
+    last_level VARCHAR(100),
+    last_faculty VARCHAR(255),
+    last_school VARCHAR(255),
+    last_branch VARCHAR(255),
+    last_label VARCHAR(255),
+    interests_json TEXT DEFAULT '[]',
+    visit_count INT DEFAULT 1,
+    first_seen DATETIME,
+    last_seen DATETIME
 );
 """
 
 CREATE_VISITS_SQL = """
 CREATE TABLE IF NOT EXISTS bot_admissions_visits (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
-    wa_id       TEXT    NOT NULL,
-    interest_code TEXT,
-    level       TEXT,
-    faculty     TEXT,
-    school      TEXT,
-    branch      TEXT,
-    label       TEXT,
-    visited_at  TEXT
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    wa_id VARCHAR(255) NOT NULL,
+    interest_code VARCHAR(100),
+    level VARCHAR(100),
+    faculty VARCHAR(255),
+    school VARCHAR(255),
+    branch VARCHAR(255),
+    label VARCHAR(255),
+    visited_at DATETIME
 );
 """
 

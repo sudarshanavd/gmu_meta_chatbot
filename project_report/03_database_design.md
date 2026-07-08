@@ -2,6 +2,9 @@
 
 The platform supports a dual-database design, defaulting to **SQLite** for rapid development and local deployment, while providing drop-in support for **MySQL** (via `pymysql` cursor adapters) by toggling the `DB_TYPE` environment variable.
 
+> [!NOTE]
+> **Dialect Compatibility Wrapper**: Since SQLite uses `?` and MySQL expects `%s` as SQL query parameters, the database layer implements `DBCursorWrapper` and `DBConnectionWrapper`. These automatically translate all `?` placeholders to `%s` at execution time when `DB_TYPE=mysql` is active, allowing clean, dialect-agnostic CRUD code.
+
 ---
 
 ## 📊 Database Schema

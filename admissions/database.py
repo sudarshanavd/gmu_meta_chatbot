@@ -40,10 +40,58 @@ def _mysql_conn():
     )
 
 
+class DBCursorWrapper:
+    def __init__(self, cursor):
+        self.cursor = cursor
+
+    def execute(self, query, params=None):
+        if DB_TYPE == "mysql" and query:
+            # Replace placeholder ? with %s for MySQL compatibility
+            query = query.replace("?", "%s")
+        if params is not None:
+            return self.cursor.execute(query, params)
+        return self.cursor.execute(query)
+
+    def __enter__(self):
+        if hasattr(self.cursor, "__enter__"):
+            self.cursor.__enter__()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if hasattr(self.cursor, "__exit__"):
+            return self.cursor.__exit__(exc_type, exc_val, exc_tb)
+
+    def __getattr__(self, name):
+        return getattr(self.cursor, name)
+
+
+class DBConnectionWrapper:
+    def __init__(self, conn):
+        self.conn = conn
+
+    def cursor(self, *args, **kwargs):
+        cur = self.conn.cursor(*args, **kwargs)
+        return DBCursorWrapper(cur)
+
+    def __enter__(self):
+        if hasattr(self.conn, "__enter__"):
+            self.conn.__enter__()
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if hasattr(self.conn, "__exit__"):
+            return self.conn.__exit__(exc_type, exc_val, exc_tb)
+
+    def __getattr__(self, name):
+        return getattr(self.conn, name)
+
+
 def get_conn():
     if DB_TYPE == "mysql":
-        return _mysql_conn()
-    return _sqlite_conn()
+        conn = _mysql_conn()
+    else:
+        conn = _sqlite_conn()
+    return DBConnectionWrapper(conn)
 
 
 # ── Schema init ──────────────────────────────────────────────────────────────

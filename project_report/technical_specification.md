@@ -11,7 +11,7 @@ The platform is designed to automate student outreach and lead capturing for GMU
 | Component | Technology | Description |
 | :--- | :--- | :--- |
 | **Backend API** | FastAPI (Python 3.10+) | Asynchronous routing, middleware, and request validation. |
-| **Database** | SQLite / MySQL | Dual-engine support with relation structures and row factories. |
+| **Database** | SQLite / MySQL | Dual-engine support. Features a cursor translation wrapper (`DBCursorWrapper`) to adapt SQLite `?` placeholders to MySQL `%s` dynamically. |
 | **Frontend** | React (Vite) + Vanilla CSS | Clean, responsive Single Page Application (SPA). |
 | **Auth** | JWT (HS256) + SHA256 hashing | Secure credentials storage and request authentication. |
 | **Messaging** | Meta Cloud API (v25.0) | Interactive WhatsApp messaging endpoints. |
